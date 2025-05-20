@@ -237,37 +237,37 @@ function App() {
   };
 
   return (
-    <div className="grid grid-cols-5 font-sans">
+      <div className="grid grid-cols-1 md:grid-cols-5 font-sans">
       {/* Sidebar */}
-      <div className="bg-zinc-800 h-screen p-6 text-white shadow-md flex flex-col">
-        <h2 className="text-xl font-bold mb-4">Chat Sessions</h2>
+      <div className="bg-zinc-800 h-screen p-4 md:p-6 text-white shadow-md flex flex-col">
+        <h2 className="text-lg md:text-xl font-bold mb-3 md:mb-4">Chat Sessions</h2>
 
         <input
           type="text"
           placeholder="Search chats..."
-          className="mb-3 px-3 py-2 rounded w-full text-black text-sm"
+          className="mb-2 md:mb-3 px-3 py-2 rounded w-full text-black text-sm"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
         <button
           onClick={createNewSession}
-          className="mb-4 px-3 py-2 text-sm bg-blue-600 hover:bg-blue-700 rounded text-white"
+          className="mb-3 md:mb-4 px-3 py-2 text-sm bg-blue-600 hover:bg-blue-700 rounded text-white"
         >
           + New Chat
         </button>
 
-        <div className="flex space-x-2 mb-4">
+        <div className="flex space-x-2 mb-3 md:mb-4">
           <button
             onClick={exportChats}
-            className="flex-1 bg-green-600 hover:bg-green-700 rounded px-3 py-2 text-white text-center text-sm"
+            className="flex-1 bg-green-600 hover:bg-green-700 rounded px-2 md:px-3 py-2 text-white text-center text-xs md:text-sm"
             title="Export chats JSON"
           >
             Export
           </button>
           <label
             htmlFor="import-chats"
-            className="flex-1 bg-gray-600 hover:bg-gray-700 rounded text-white text-center cursor-pointer text-sm"
+            className="flex-1 bg-gray-600 hover:bg-gray-700 rounded text-white text-center cursor-pointer text-xs md:text-sm"
             title="Import chats JSON"
           >
             Import
@@ -283,12 +283,12 @@ function App() {
 
         <ul className="space-y-2 overflow-y-auto flex-1">
           {filteredChats.length === 0 && (
-            <li className="text-zinc-400 italic text-center">No chats found</li>
+            <li className="text-zinc-400 italic text-center text-xs md:text-sm">No chats found</li>
           )}
           {filteredChats.map((chat) => (
             <li
               key={chat.id}
-              className={`flex justify-between items-center px-3 py-2 rounded cursor-pointer ${
+              className={`flex justify-between items-center px-2 md:px-3 py-2 rounded cursor-pointer ${
                 chat.id === currentSessionId ? 'bg-zinc-700' : 'hover:bg-zinc-700'
               }`}
               onDoubleClick={() => startRenaming(chat.id, chat.name)}
@@ -299,7 +299,7 @@ function App() {
                   e.stopPropagation();
                   togglePinChat(chat.id);
                 }}
-                className={`mr-2 ${chat.pinned ? 'text-yellow-400' : 'text-gray-400 hover:text-yellow-400'}`}
+                className={`mr-1 md:mr-2 ${chat.pinned ? 'text-yellow-400' : 'text-gray-400 hover:text-yellow-400'}`}
                 title={chat.pinned ? 'Unpin chat' : 'Pin chat'}
               >
                 📌
@@ -314,12 +314,12 @@ function App() {
                   onChange={(e) => setRenameText(e.target.value)}
                   onBlur={() => saveRename(chat.id)}
                   onKeyDown={(e) => handleRenameKey(e, chat.id)}
-                  className="flex-1 bg-zinc-900 text-white px-2 py-1 rounded"
+                  className="flex-1 bg-zinc-900 text-white px-2 py-1 rounded text-xs md:text-sm"
                 />
               ) : (
                 <span
                   onClick={() => loadSession(chat.id)}
-                  className="flex-1 truncate"
+                  className="flex-1 truncate text-xs md:text-sm"
                   title="Double click to rename"
                 >
                   {chat.name || 'New Chat'}
@@ -331,7 +331,7 @@ function App() {
                   e.stopPropagation();
                   deleteSession(chat.id);
                 }}
-                className="ml-2 text-red-500 hover:text-red-700 font-bold"
+                className="ml-1 md:ml-2 text-red-500 hover:text-red-700 font-bold text-sm"
                 title="Delete Chat"
               >
                 ✕
@@ -343,7 +343,7 @@ function App() {
         {currentSessionId && (
           <button
             onClick={refreshChat}
-            className="mt-4 px-3 py-2 text-sm bg-yellow-600 hover:bg-yellow-700 rounded text-black"
+            className="mt-3 md:mt-4 px-3 py-2 text-sm bg-yellow-600 hover:bg-yellow-700 rounded text-black"
             title="Clear current chat"
           >
             Refresh Chat
@@ -352,28 +352,28 @@ function App() {
       </div>
 
       {/* Main Chat Area */}
-      <div className="col-span-4 flex flex-col h-screen bg-zinc-950">
-        <div className="flex-1 p-6 overflow-auto space-y-4">
+      <div className="col-span-1 md:col-span-4 flex flex-col h-screen bg-zinc-950">
+        <div className="flex-1 p-4 md:p-6 overflow-auto space-y-4">
           {messages.map((msg, idx) => (
             <div
               key={idx}
-              className={`max-w-xl px-4 py-2 rounded-xl text-white whitespace-pre-wrap relative ${
+              className={`max-w-full md:max-w-xl px-3 md:px-4 py-2 rounded-xl text-white whitespace-pre-wrap relative ${
                 msg.sender === 'user'
                   ? 'bg-blue-600 self-end ml-auto'
                   : 'bg-zinc-700 self-start mr-auto'
               }`}
             >
               {Array.isArray(msg.text) ? (
-                <ul className="list-disc pl-5 space-y-1">
+                <ul className="list-disc pl-5 space-y-1 text-xs md:text-sm">
                   {msg.text.map((line, i) => (
                     <li key={i}>{line}</li>
                   ))}
                 </ul>
               ) : (
-                msg.text
+                <p className="text-sm md:text-base">{msg.text}</p>
               )}
               {msg.timestamp && (
-                <div className="text-xs text-zinc-400 absolute bottom-1 right-2 select-none">
+                <div className="text-2xs md:text-xs text-zinc-400 absolute bottom-1 right-2 select-none">
                   {formatTimestamp(msg.timestamp)}
                 </div>
               )}
@@ -381,7 +381,7 @@ function App() {
           ))}
 
           {isTyping && (
-            <div className="max-w-xl px-4 py-2 rounded-xl bg-zinc-700 text-white self-start mr-auto animate-pulse">
+            <div className="max-w-full md:max-w-xl px-3 md:px-4 py-2 rounded-xl bg-zinc-700 text-white self-start mr-auto animate-pulse text-sm">
               Bot is typing...
             </div>
           )}
@@ -390,25 +390,25 @@ function App() {
         </div>
 
         {/* Footer Input */}
-        <footer className="bg-zinc-900 p-4 border-t border-zinc-700">
+        <footer className="bg-zinc-900 p-3 md:p-4 border-t border-zinc-700">
           <div className="flex flex-col items-center space-y-2">
-            <div className="flex items-center bg-zinc-800 text-white h-16 px-4 py-2 rounded-full border border-zinc-600 w-full max-w-2xl">
+            <div className="flex items-center bg-zinc-800 text-white h-12 md:h-16 px-3 md:px-4 py-2 rounded-full border border-zinc-600 w-full max-w-xl">
               <input
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 type="text"
-                className="flex-1 bg-transparent text-white outline-none p-3 placeholder-zinc-400 text-sm"
+                className="flex-1 bg-transparent text-white outline-none p-2 md:p-3 placeholder-zinc-400 text-xs md:text-sm"
                 placeholder="Ask Me Anything..."
                 onKeyDown={(e) => e.key === 'Enter' && askQuestion()}
               />
               <button
                 onClick={askQuestion}
-                className="ml-3 bg-white text-black font-semibold px-5 py-2 rounded-full hover:bg-zinc-200 transition"
+                className="ml-2 md:ml-3 bg-white text-black font-semibold px-3 md:px-5 py-1 md:py-2 rounded-full hover:bg-zinc-200 transition text-xs md:text-sm"
               >
                 ASK
               </button>
             </div>
-            <p className="text-sm text-zinc-500">
+            <p className="text-2xs md:text-sm text-zinc-500 text-center">
               Developed by <span className="text-white font-semibold">Sheryar Khan</span>
             </p>
           </div>
